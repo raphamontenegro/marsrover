@@ -1,8 +1,8 @@
 /*
  Rapha Montenegros Mars Rover exercise.
- Known bugs/issues that I couldn't fix:
- - command function only gets the first letter of a string. 
- For some reason the loop is not working and I can't find out why.
+ -command function bug fixed.
+ - For lack of time, took of the bonus boundary feature because rover would get stuck.
+ - added travel log and currentPosition as an object of rover
  - I tried to set the boundary so it wouldn't get out of the grid.
  It recognizes when it is out of the grid, 
  but the only logic to not allow it to go forward that I can think of is really complicated 
@@ -13,12 +13,11 @@
 var rover = {
   direction: "N",
   x: 0,
-  y: 0
-};
+  y: 0,
+  currentPosition: "X:0, Y:0",
+  travelLog: "X:0, Y:0"
 
-var currentPosition;
-
-var travelLog = "X:" + rover.x + " " + "Y:" + rover.y;
+}; 
 
 var errorMessage = "Houston, we have a problem. Try again";
 
@@ -59,9 +58,7 @@ function turnRight(rover){
 //move forward code block
 function moveForward(rover) {
   console.log("moveForward was called")
-  if (rover.x > 9 || rover.y > 9 || rover.x < 0 || rover.y < 0) {
-    console.log(errorMessage)
-  } else if (rover.direction === "N") {
+  if (rover.direction === "N") {
     rover.y -= 1;
   } else if (rover.direction === "E") {
     rover.x += 1;
@@ -72,17 +69,15 @@ function moveForward(rover) {
   } else {
     alert(errorMessage);
   }
-  currentPosition = ("X:" + rover.x) + (" Y:" + rover.y);
-  travelLog += ", " + currentPosition
-  console.log("Your current position is " + currentPosition + ".")
+  rover.currentPosition = ("X:" + rover.x) + (" Y:" + rover.y);
+  rover.travelLog += ", " + rover.currentPosition
+  console.log("Your current position is " + rover.currentPosition + ".")
 } 
 
 //move back code block
 function moveBack(rover) {
   console.log("moveBack was called")
-  if (rover.x > 9 || rover.y > 9 || rover.x < 0 || rover.y < 0) {
-    console.log(errorMessage)
-  } else if (rover.direction === "N") {
+  if (rover.direction === "N") {
     rover.y += 1;
   } else if (rover.direction === "E") {
     rover.x -= 1;
@@ -93,26 +88,25 @@ function moveBack(rover) {
   } else {
     alert(errorMessage);
   }
-  currentPosition = ("X:" + rover.x) + (" Y:" + rover.y);
-  travelLog += ", " + currentPosition
-  console.log("Your current position is " + currentPosition + ".")
+  rover.currentPosition = ("X:" + rover.x) + (" Y:" + rover.y);
+  rover.travelLog += ", " + rover.currentPosition
+  console.log("Your current position is " + rover.currentPosition + ".")
 }
 //commmand function
 function command (string) {
-  var string = string.split(",")
   for (var i = 0; i < string.length; i++) {
     if (string[i] === "f") {
-      return moveForward(rover);
+      moveForward(rover);
     } else if (string[i] === "l") {
-      return turnLeft(rover);
+     turnLeft(rover);
     } else if (string[i] === "r") {
-      return turnRight(rover);      
+     turnRight(rover);      
     } else if (string[i] === "b") {
-      return moveBack(rover)
+      moveBack(rover)
     } else {
       console.log(errorMessage)
     }
   }
-  currentPosition = ("X:" + rover.x) + (" Y:" + rover.y);
-  console.log("Your current position is " + currentPosition + ".")
+  rover.currentPosition = ("X:" + rover.x) + (" Y:" + rover.y);
+  console.log("Your current position is " + rover.currentPosition + ".")
 }
